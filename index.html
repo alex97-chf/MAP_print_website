@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>MAP PRINT</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+
+    <header>
+      <h1>MAP PRINT</h1>
+
+      <nav>
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+ <section id="top">
+  <h2>Fast, clean, reliable 3D prints</h2>
+  <p>
+    Custom parts, prototypes, and personalized objects.
+    Send your STL/3MF—or just the idea—and I’ll help you pick the right material.
+  </p>
+
+  <a class="cta" href="#contact">Request a quote</a>
+</section>
+
+        <section id="services">
+    <h2>Services</h2>
+    <p>Custom 3D printing for functional parts, prototypes, and personalized objects.</p>
+  </section>
+
+  <section id="portfolio">
+  <h2>Portfolio</h2>
+  <p>Some examples of what I can print. (Real photos coming soon.)</p>
+
+  <div class="grid">
+    <article class="card">
+      <h3>Phone Stand</h3>
+      <p>Stable, adjustable stand for desk use.</p>
+      <div class="tags">
+        <span>PLA</span><span>Functional</span><span>Fast</span>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3>Custom Keychain</h3>
+      <p>Name + icon, multiple colors available.</p>
+      <div class="tags">
+        <span>PLA</span><span>Personalized</span>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3>Replacement Clip</h3>
+      <p>Small part replacement for household items.</p>
+      <div class="tags">
+        <span>PETG</span><span>Durable</span>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3>Prototype Housing</h3>
+      <p>Fast iteration for product ideas and testing.</p>
+      <div class="tags">
+        <span>PLA</span><span>Prototype</span>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3>Cable Organizer</h3>
+      <p>Desk organization clips and guides.</p>
+      <div class="tags">
+        <span>PETG</span><span>Functional</span>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3>Mini Sign / Plate</h3>
+      <p>Simple signage for doors, shelves, or gifts.</p>
+      <div class="tags">
+        <span>PLA</span><span>Custom Text</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="pricing">
+  <h2>Pricing</h2>
+  <p>
+    Pricing depends on material, size, print time, and complexity.
+    Use the quick estimator below for a rough idea.
+  </p>
+
+  <div class="estimator">
+    <div class="row">
+      <label for="material">Material</label>
+      <select id="material">
+        <option value="PLA">PLA</option>
+        <option value="PETG">PETG</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <label for="hours">Print time (hours)</label>
+      <input id="hours" type="number" min="0" step="0.1" value="2" />
+    </div>
+
+    <div class="row">
+      <label for="qty">Quantity</label>
+      <input id="qty" type="number" min="1" step="1" value="1" />
+    </div>
+
+    <button id="estimateBtn" type="button">Estimate price</button>
+
+    <p class="result" id="result">Estimated total: —</p>
+    <p class="note">
+      Note: This is a rough estimate. Complex parts, supports, post-processing, and tolerances can change the final quote.
+    </p>
+  </div>
+</section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Send details about your part (dimensions, material, quantity) and I’ll reply with a quote.</p>
+
+    <form>
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" placeholder="Your name" />
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" placeholder="you@example.com" />
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" placeholder="What do you want to print?"></textarea>
+
+      <button type="submit">Send</button>
+    </form>
+  </section>
+</main>
+
+
+    <footer>
+      <p>© 2026 3D Printing Studio</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
