@@ -1,16 +1,28 @@
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --text: #111111;
+  --muted: #5a616b;
+
+  --border: #e7e9ee;
+
+  --primary: #111111;   /* main brand color */
+  --primaryText: #ffffff;
+
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
 /* BASIC RESET & GLOBAL STYLES */
 body {
-    max-width: 980px;
-margin: 0 auto;
-  margin: 0;
+  max-width: 980px;
+  margin: 0 auto;
   padding: 24px;
-
   font-family: system-ui, Arial, sans-serif;
-  background: #f6f7f9;
-  color: #111;
-  
-  
+  background: var(--bg);
+  color: var(--text);
 }
+
 
 /* HEADER BAR */
 header {
@@ -19,14 +31,13 @@ header {
   align-items: center;           /* vertical alignment */
 
   padding: 16px 18px;
-  background: white;
-  border-radius: 12px;
+  background: var(--surface);
+  border-radius: var(--radius);
 
   position: sticky;
 top: 12px;
 z-index: 10;
-box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-
+box-shadow: var(--shadow);
 }
 
 /* SITE TITLE */
@@ -54,13 +65,15 @@ nav a:hover {
 /* MAIN CONTENT */
 main {
   margin-top: 18px;
-  background: white;
-  padding: 18px;
-  border-radius: 12px;
+  padding: 0;
+  background: transparent;
 }
 
-/* SECTIONS */
-section + section {
+main > section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
   margin-top: 16px;
 }
 
@@ -160,7 +173,7 @@ section {
 .card {
   background: #ffffff;
   border: 1px solid #e7e9ee;
-  border-radius: 12px;
+  border: 1px solid var(--border);
   padding: 14px;
 }
 
@@ -202,6 +215,7 @@ section {
   .grid {
     grid-template-columns: 1fr;
   }
+}
 
 /* Pricing estimator */
 .estimator {
@@ -279,4 +293,42 @@ section {
   }
 }
 
+/* Unified button style (reusable) */
+.btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: var(--primaryText);
+  text-decoration: none;
+  font-weight: 800;
+  border: 0;
+  cursor: pointer;
+}
+
+.btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0px);
+}
+
+/* Make normal <button> match the .btn style */
+button {
+  background: var(--primary);
+  color: var(--primaryText);
+}
+
+/* Card hover (keep ONE version) */
+.service-card,
+.card {
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.service-card:hover,
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
 }
