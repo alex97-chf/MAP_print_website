@@ -4,6 +4,8 @@ const hoursEl = document.getElementById("hours");
 const qtyEl = document.getElementById("qty");
 const estimateBtn = document.getElementById("estimateBtn");
 const resultEl = document.getElementById("result");
+const rushEl = document.getElementById("rush");
+const finishEl = document.getElementById("finish");
 
 // 2) Pricing rules (simple, adjustable constants)
 const BASE_FEE = 10;        // fixed fee (setup, machine time, handling)
@@ -21,20 +23,44 @@ function toNumber(value) {
   return Number.isFinite(n) ? n : 0;
 }
 
-// 4) Calculate estimate based on the current UI values
 function estimatePrice() {
-  const material = materialEl.value;      // "PLA" or "PETG"
-  const hours = toNumber(hoursEl.value);  // e.g. 2.5
-  const qty = Math.max(1, Math.floor(toNumber(qtyEl.value))); // integer >= 1
+  const material = materialEl.value;
+  const hours = toNumber(hoursEl.value);
+  const qty = Math.max(1, Math.floor(toNumber(qtyEl.value)));
 
-  // Cost per unit:
+  const rush = rushEl.checked;     // true/false
+  const finish = finishEl.checked; // true/false
+
   const perUnit = BASE_FEE + (HOURLY_RATE * hours) + (MATERIAL_RATE[material] * hours);
 
-  // Total:
-  const total = perUnit * qty;
+  // Finishing is per item
+  const finishingFee = finish ? 5 : 0;
 
-  // 5) Update the page (DOM)
-  resultEl.textContent = `Estimated total: ${total.toFixed(2)} EUR (for ${qty} item(s))`;
+  let subtotal = (perUnit + finishingFee) * qty;
+
+  // Quantity discount (simple example)
+  // 5+ items: 10% off, 10+ items: 15% off
+  let discountRate = 0;
+  if (qty >= 10) discountRate = 0.15;
+  else if (qty >= 5) discountRate = 0.10;
+
+  subtotal = subtotal * (1 - discountRate);
+
+  // Rush markup (after discount, common approach)
+  if (rush) subtotal = subtotal * 1.25;
+
+  // Minimum order total
+  const MIN_TOTAL = 15;
+  const total = Math.max(MIN_TOTAL, subtotal);
+
+  // Build a clear output
+  const parts = [];
+  if (discountRate > 0) parts.push(`discount ${(discountRate * 100).toFixed(0)}%`);
+  if (rush) parts.push("rush +25%");
+  if (finish) parts.push("finishing +€5/item");
+  const notes = parts.length ? ` (${parts.join(", ")})` : "";
+
+  resultEl.textContent = `Estimated total: €${total.toFixed(2)} for ${qty} item(s)${notes}`;
 }
 
 // 6) When the button is clicked, run the calculation
