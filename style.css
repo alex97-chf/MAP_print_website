@@ -6,7 +6,7 @@
 
   --border: #e7e9ee;
 
-  --primary: #111111;   /* main brand color */
+  --primary: var(--accent);   /* main brand color */
   --primaryText: #ffffff;
 
   --radius: 12px;
@@ -18,6 +18,12 @@
   --h3: 18px;
   --body: 16px;
   --small: 14px;
+
+--accent: #ea580c;        /* main orange */
+--accentHover: #c2410c;   /* darker orange */
+--accentSoft: rgba(234, 88, 12, 0.12);
+
+
 }
 
 /* BASIC RESET & GLOBAL STYLES */
@@ -55,6 +61,14 @@ p {
   color: var(--muted);
 }
 
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  color: var(--accentHover);
+}
+
 /* HEADER BAR */
 header {
   display: flex;                 /* layout on one row */
@@ -86,15 +100,19 @@ nav {
   gap: 14px;
 }
 
-nav a {
+nnav a {
   text-decoration: none;
-  color: #333;
-  font-weight: 600;
+  color: #2b2f36;
+  font-weight: 650;
+  padding: 8px 10px;
+  border-radius: 10px;
 }
 
 nav a:hover {
-  text-decoration: underline;
+  background: var(--accentSoft);
+  color: var(--accentHover);
 }
+
 
 /* MAIN CONTENT */
 main {
@@ -333,6 +351,19 @@ section {
   border-color: #d0dbd2;
 }
 
+.service-link {
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+
+.service-link:hover {
+  background: var(--accentSoft);
+}
+
+.service-card,
+.card {
+  border-color: rgba(0, 0, 0, 0.08);
+}
 
 
 /* Responsive */
@@ -355,10 +386,11 @@ section {
   cursor: pointer;
 }
 
-.btn:hover {
-  opacity: 0.92;
-  transform: translateY(-1px);
+.btn:hover,
+button:hover {
+  background: var(--accentHover);
 }
+
 
 .btn:active {
   transform: translateY(0px);
@@ -394,3 +426,33 @@ li {
   font-weight: 800;
   letter-spacing: -0.4px;
 }
+#services h2,
+#portfolio h2,
+#pricing h2,
+#contact h2 {
+  position: relative;
+  display: inline-block;
+}
+
+#services h2::after,
+#portfolio h2::after,
+#pricing h2::after,
+#contact h2::after {
+  content: "";
+  display: block;
+  height: 2px;
+  width: 60%;
+  margin-top: 0px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* Buttons should NOT inherit link hover colors */
+a.btn {
+  color: var(--primaryText);
+}
+
+a.btn:hover {
+  color: var(--primaryText);
+}
+
