@@ -95,6 +95,11 @@ header h1 {
   letter-spacing: -0.5px;
 }
 
+header h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+
 
 /* NAVIGATION */
 nav {
@@ -111,6 +116,11 @@ nav a {
 }
 
 nav a:hover {
+  background: var(--accentSoft);
+  color: var(--accentHover);
+}
+
+nav a[aria-current="page"] {
   background: var(--accentSoft);
   color: var(--accentHover);
 }
@@ -232,6 +242,15 @@ section {
   scroll-margin-top: 90px;
 }
 /* Portfolio grid layout */
+
+.portfolio-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  margin-bottom: 12px;
+}
 .grid {
   margin-top: 12px;
   display: grid;
@@ -545,6 +564,132 @@ a.btn:hover {
 @media (max-width: 800px) {
   .hero {
     grid-template-columns: 1fr;
+  }
+}
+
+/* HERO BACKGROUND ANIMATION — pixel-art print head building an object bottom-to-top, looping */
+.hero-text,
+.hero-box {
+  position: relative;
+  z-index: 1;
+}
+
+.print-anim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+/* Confine the build area to the right side (behind hero-box) so it never sits under the hero copy */
+.print-stage {
+  position: absolute;
+  top: 6%;
+  bottom: 6%;
+  right: 4%;
+  width: 46%;
+}
+
+.print-grid {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: clamp(3px, 0.8vw, 6px);
+  padding-bottom: 8%;
+}
+
+.print-grid .row {
+  display: flex;
+  justify-content: center;
+  gap: clamp(3px, 0.8vw, 6px);
+  opacity: 0;
+  transform: scaleY(0.3);
+  transform-origin: bottom;
+  animation: printRowBuild var(--print-dur, 7s) linear infinite;
+  animation-delay: calc(var(--order) * (var(--print-dur, 7s) / 9) * -1);
+}
+
+.print-grid .row i {
+  display: block;
+  width: clamp(10px, 1.6vw, 18px);
+  height: clamp(12px, 1.8vw, 20px);
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+@keyframes printRowBuild {
+  0%   { opacity: 0; transform: scaleY(0.3); }
+  4%   { opacity: 1; transform: scaleY(1); }
+  82%  { opacity: 1; transform: scaleY(1); }
+  90%  { opacity: 0; transform: scaleY(0.3); }
+  100% { opacity: 0; transform: scaleY(0.3); }
+}
+
+.print-bed {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 6%;
+  height: 3px;
+  background: var(--muted);
+  opacity: 0.4;
+  border-radius: 2px;
+}
+
+.print-head {
+  position: absolute;
+  left: 50%;
+  top: 88%;
+  transform: translateX(-50%);
+  animation: printHeadTravel var(--print-dur, 7s) linear infinite;
+}
+
+@keyframes printHeadTravel {
+  0%   { top: 88%; }
+  4%   { top: 88%; }
+  92%  { top: 10%; }
+  100% { top: 10%; }
+}
+
+.head-wiggle {
+  animation: printHeadWiggle 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes printHeadWiggle {
+  from { transform: translateX(-8px); }
+  to   { transform: translateX(8px); }
+}
+
+.nozzle-body {
+  width: 18px;
+  height: 14px;
+  background: var(--text);
+  border-radius: 3px 3px 0 0;
+  margin: 0 auto;
+}
+
+.nozzle-tip {
+  width: 0;
+  height: 0;
+  margin: 0 auto;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid var(--text);
+}
+
+@media (max-width: 800px) {
+  .print-anim {
+    opacity: 0.2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .print-anim * {
+    animation: none !important;
   }
 }
 

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Contact · MAP PRINT</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+
+    <header>
+      <h1><a href="index.html">MAP PRINT</a></h1>
+
+      <nav>
+        <a href="services.html">Services</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="contact.html" aria-current="page">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="contact">
+        <h2>Contact</h2>
+        <p>Send details about your part (dimensions, material, quantity) and I’ll reply with a quote.</p>
+
+        <form action="https://formspree.io/f/xwvvlyqz" method="POST">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" required />
+
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required />
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="What do you want to print?" required></textarea>
+
+          <input type="hidden" name="_subject" value="New 3D print request" />
+          <input
+          type="hidden"
+          name="_next"
+          value="https://alex97-chf.github.io/MAP_print_website/thanks.html"
+        />
+
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 MAP STUDIO 3D Printing </p>
+    </footer>
+  </body>
+</html>
