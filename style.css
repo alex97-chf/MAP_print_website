@@ -26,6 +26,7 @@
   --surfaceAlt: rgba(255, 255, 255, 0.75);
   --tint: rgba(234, 88, 12, 0.03);
 
+  --font-display: "Space Grotesk", system-ui, sans-serif;
 }
 
 /* BASIC RESET & GLOBAL STYLES */
@@ -117,24 +118,54 @@ a:hover {
 /* HEADER BAR */
 header {
   display: flex;                 /* layout on one row */
+  flex-wrap: wrap;                /* wrap onto a 2nd line instead of overflowing on narrow screens */
   justify-content: space-between;/* left + right */
   align-items: center;           /* vertical alignment */
+  row-gap: 10px;
 
   padding: 16px 18px;
-  background: var(--surface);
   border-radius: var(--radius);
 
   position: sticky;
 top: 12px;
 z-index: 10;
-box-shadow: var(--shadow);
+}
+
+/* Glass panel sits behind the header text as its own layer, so the text
+   stays sharp while the panel itself fades into a soft blurred haze at
+   rest, then sharpens back up on hover/focus. */
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(4px) saturate(120%);
+  -webkit-backdrop-filter: blur(4px) saturate(120%);
+  filter: blur(16px);
+  box-shadow: none;
+  transition: filter 0.5s ease, background-color 0.5s ease,
+    border-color 0.5s ease, box-shadow 0.5s ease, backdrop-filter 0.5s ease;
+}
+
+header:hover::before,
+header:focus-within::before {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  filter: blur(0);
+  box-shadow: var(--shadow);
 }
 
 /* SITE TITLE */
 header h1 {
   margin: 0;
-  font-size: var(--h1);
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 700;
   letter-spacing: -0.5px;
 }
 
@@ -147,13 +178,16 @@ header h1 a {
 /* NAVIGATION */
 nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 14px;
 }
 
 nav a {
+  font-family: var(--font-display);
   text-decoration: none;
   color: #2b2f36;
-  font-weight: 650;
+  font-weight: 600;
+  font-size: 18px;
   padding: 8px 10px;
   border-radius: 10px;
 }
@@ -539,18 +573,55 @@ a.btn:hover {
 }
 
 
-/* HERO */
+/* HERO — four independent, slowly-morphing fluid blobs (headline, the two
+   buttons, and the checklist), each its own island with generous gaps so
+   they never touch or overlap, nudged off-center as a group. */
 .hero {
   display: grid;
-  grid-template-columns: 2fr 0.6fr;
-  gap: 25px;
+  grid-template-columns: 1.4fr 1fr;
+  grid-template-areas:
+    "text      checklist"
+    "actions   checklist";
+  column-gap: clamp(40px, 6vw, 72px);
+  row-gap: clamp(28px, 4vw, 40px);
   align-items: start;
   position: relative;
   overflow: hidden;
+
+  padding: clamp(24px, 4vw, 48px);
+  margin-left: clamp(-20px, -2.5vw, -8px);
+
+  /* Override the plain white card from the base `main > section` rule —
+     each blob supplies its own background instead. */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Shared "blob island" treatment: content sits in normal flow, fully
+   unclipped, while a ::before layer behind it carries the morphing shape —
+   so no amount of blob movement can ever cut into the text/buttons. */
+.hero-text,
+.hero-box {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-text {
-  position: relative;
+  grid-area: text;
+  padding: clamp(20px, 3vw, 32px);
+}
+
+.hero-text::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius); /* fallback if clip-path isn't supported */
+  clip-path: url(#heroBlob);
 }
 
 .hero-text h2 {
@@ -561,38 +632,86 @@ a.btn:hover {
   color: var(--text);
 }
 
-.hero-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-top: 12px;
-}
-
-.hero-link {
-  text-decoration: none;
-  font-weight: 800;
-  padding: 8px 10px;
-  border-radius: 10px;
-}
-
-.hero-link:hover {
-  background: var(--accentSoft);
-}
-
 .hero-note {
   margin-top: 12px;
   font-size: var(--small);
   color: var(--muted);
 }
 
-/* right side box */
-.hero-box {
+/* Buttons — each its own small blob, spaced apart so they never touch */
+.hero-actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(24px, 4vw, 40px);
+  align-items: center;
+}
+
+.hero-actions .btn,
+.hero-actions .hero-link {
   position: relative;
-  border: 1px solid var(--border);
+  z-index: 1;
+  padding: 16px 28px;
+  margin: 0;
+  background: transparent;
+}
+
+.hero-actions .btn::before,
+.hero-actions .hero-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   border-radius: var(--radius);
-  padding: 18px;
-  background: rgba(255, 255, 255, 0.7);
+}
+
+.hero-actions .btn::before {
+  background: var(--accent);
+  clip-path: url(#heroBlobQuote);
+}
+
+.hero-actions .btn:hover {
+  background: transparent;
+}
+
+.hero-actions .btn:hover::before {
+  background: var(--accentHover);
+}
+
+.hero-actions .hero-link {
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.hero-actions .hero-link::before {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  clip-path: url(#heroBlobServices);
+}
+
+.hero-actions .hero-link:hover::before {
+  background: var(--accentSoft);
+}
+
+/* Checklist blob */
+.hero-box {
+  grid-area: checklist;
+  align-self: start;
+  padding: clamp(24px, 3vw, 32px);
+}
+
+.hero-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  clip-path: url(#heroBlobList);
 }
 
 .hero-box h3 {
@@ -607,14 +726,11 @@ a.btn:hover {
 @media (max-width: 800px) {
   .hero {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "text"
+      "actions"
+      "checklist";
   }
-}
-
-/* HERO BACKGROUND ANIMATION — pixel-art print head building an object bottom-to-top, looping */
-.hero-text,
-.hero-box {
-  position: relative;
-  z-index: 1;
 }
 
 .print-anim {
